@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arpo's Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	
+	
+</head>
+<body>
+	<div th:replace="~{components/nav-admin :: nav}"></div><br>
+	<main>
+		<div class="container text-center">
+			<h1 class="text-center mb-4">Listado de Pedidos</h1><hr><br>
+				<form th:action="@{/order/filtrarOrdenes}" method="post">
+				    <div class="row">
+				        <div class="col">
+				            <label for="status">Filtrar por Estado</label>
+				            <select name="status" class="form-control" id="status" required="required">
+				                <option value="Seleccionar...">Seleccionar...</option>
+				                <option th:each="statusOption : ${statusOptions}" th:value="${statusOption}" th:text="${statusOption}"></option>
+				            </select><br>
+				        </div>
+				
+				        <div class="col"><br>
+				            <button type="submit" class="btn btn-primary">Filtrar</button>
+				        </div>
+				    </div>
+				</form>
+
+	        	<table class="table table-striped table-bordered">
+					  <thead>
+					    <tr>
+					      <th>ID</th>
+					      <th>Status</th>
+					      <th>Fecha</th>
+					      <th>Cliente</th>
+					      <th>Details</th>
+					      <th>Total</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="order : ${orders}">
+					      <td th:text="${order.idOrder}"></td>
+					      <td th:text="${order.status}"></td>
+					      <td th:text="${order.dateOrder}"></td>
+					      <td th:text="${order.user.name}+' '+${order.user.surname}"></td>
+					      <td><a th:href="@{export/pdf/{id} (id=${order.idOrder}) }" class="btn btn-link">
+							  <img class="card-img-top" src="https://cdn-icons-png.flaticon.com/128/950/950258.png" 
+									style='width: 25px'></img>
+							  Imprimir</a></td>
+					      <td th:text="${order.total}"></td>
+					      <td><a class="btn btn-primary" 
+					             th:href="@{editOrder/{id} (id=${order.idOrder}) }">
+								<img class="card-img-top" src="https://cdn-icons-png.flaticon.com/512/1177/1177434.png" 
+								style='width: 30px'></img>
+							</a></td>
+					    </tr>
+					  </tbody>
+					</table>
+				
+		</div>
+
+	</main><br><br><br>
+	<div th:replace="~{components/footer :: footer}"></div>
+</body>
+</html>

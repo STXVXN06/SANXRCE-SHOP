@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css"th:href="@{/css/login.css}">
+	<title>Arpo's Shop</title>
+</head>
+
+<body>
+	<div class="login-container">
+		<div class="login-box">
+			<img src="https://png.pngtree.com/element_our/png_detail/20181229/vector-shop-icon-png_302739.jpg"
+                    alt="" width="150" height="auto" class="d-inline-block align-text-top">
+			<h1>Login</h1>
+			<form th:action="@{/userProfile}" method="post">
+				<input type="hidden" id="userId" name="userId" th:value="${userId}">
+				<div class="input-container">
+					<input type="email" id="email" name="email" placeholder="Email" required>
+				</div>
+				<div class="input-container">
+					<input type="password" id="password" name="password" placeholder="Contraseña" required>
+				</div>
+				<!-- Para el mensaje de error -->
+				<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+				    <p th:text="${errorMessage}"></p>
+				</div>
+				<button type="submit">Iniciar Sesión</button>
+			</form>
+			<p class="signup-link">¿No tienes una cuenta? <a th:href='@{/signIn}'>Regístrate aquí</a></p>
+		</div>
+		
+	</div>
+</body>
+
+</html>

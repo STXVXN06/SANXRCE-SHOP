@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arpo's Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div th:insert="~{components/nav-user :: nav}"></div><br>
+    <section>
+        <div class="container-fluid" th:switch="${products}+${categories}">
+            <div class="row d-flex justify-content-around">
+                <div class="col-2 side h-90 overflow-auto">
+                    <span class=""><b>Categorias</b></span>
+                    <hr>
+                    <div class="list-group">
+                        <a th:href="@{/client/available-products}" class="list-group-item list-group-item-action "
+                            aria-current="true">Mostrar Todo</a>
+                        <a class="list-group-item list-group-item-action  " aria-current="true" th:each="category : ${categories}"
+                            th:href="@{/client/categoryproduct/{nameCategory}(nameCategory=${category.nameCategory})}" 
+                            th:text="${category.nameCategory}"></a>
+                    </div>
+                </div>
+                <div class="col-10 overflow-auto">
+					
+					<input type="number" class="form-control" th:name= "idUser"
+								th:field="*{user.idUser}" hidden="true">
+								
+					<div th:if="${noProductsMessage}" class="alert alert-info p-2">
+				        <p th:text="${noProductsMessage}"></p>
+				    </div>
+
+				    <div class="row d-flex justify-content-space-evenly" 
+				    	style="grid-template-columns: repeat(3, 1fr); row-grap:15px;">
+						<div class="card mx-4" style="width:350px; "  th:each="product : ${products}">
+							<div class="card-img" style="width:330;">
+								<img  class="card-img-top m-1 " th:src="${product.urlImagen}" width="320px" height="auto">
+							</div>
+
+						  <div class="card-body">
+						    <h4 class="card-title" th:text="${product.nameProduct}"></h4>
+						    <span><b>Proveedor: </b><span th:text="${product.idSupplier.nameSupplier}"></span></span><br>
+						    <b><span th:text="${product.price}" style="color: crimson;"></span></b> <br>
+				
+						    <a th:href="@{/client/detailproduct/{idProduct}(idProduct=${product.idProduct})}">
+								<img class="card-img-top mx-5 " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn6O3SGIX-byH--yDbt5Pi0q4MmqeeDT_xuWJws9S0SIIEGl0MgQxENYjeVgkS1ptfYw&usqp=CAU" style='width: 130px'>
+							</a>
+						</div>
+					</div>
+                    
+                </div>
+
+            </div>
+
+    </section><br><br><br><br><br><br>
+
+    <div th:replace="~{components/footer :: footer}"></div>
+</body>
+
+</html>

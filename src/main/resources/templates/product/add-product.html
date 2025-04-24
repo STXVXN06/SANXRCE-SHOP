@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arpo's Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:replace="~{components/nav-admin :: nav}"></div>
+<br>
+	<main>
+		<div class="container">
+        <h1 class="text-center">Registro de productos</h1><hr><br>
+        <form th:action="@{/product/saveProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+			
+            <div class="form-group col-6">				
+                <label for="nameProduct">Nombre producto</label>
+                <input type="text" th:field="*{nameProduct}" class="form-control" id="nameProduct" required="required">      
+            </div>
+            
+            <div class="form-group col-6">
+	             <label for="idCategory">Categoria</label>
+	             <select name="idCategory" class="form-control" id="idCategory" required="required">
+					<option >Seleccionar...</option>       
+	                <option th:each="category : ${category}" th:value="${category.idCategoryProduct}" th:text="${category.nameCategory}"></option>
+	             </select>
+	        </div>
+      
+            <div class="form-group col-6">
+                <label for="stock">Cantidad</label>
+                <input type="number" th:field="*{stock}" class="form-control" id="stock" required="required" min="1" max="100">
+            </div>
+            <div class="form-group col-6">
+                <label for="description">Descripción</label>
+                <input type="text" th:field="*{description}" class="form-control" id="description" required="required">
+            </div>
+        	<div class="form-group col-6">
+    			<label for="price">Precio</label>
+    			<input type="number" th:field="*{price}" class="form-control" id="price" required="required" min="1000">
+			</div>
+
+            <div class="form-group col-6">
+	                <label for="idSupplier">Proveedor</label>
+	                <select name="idSupplier" class="form-control" id="idSupplier" required="required">
+						<option >Seleccionar...</option>       
+	                    <option th:each="supplier : ${supplier}" th:value="${supplier.idSupplier}" th:text="${supplier.nameSupplier}"></option>
+	                </select>
+	        </div><br>
+            <div class="form-group col-6"> 
+				<label for="idSupplier">Imagen(Solo JPEG)</label>
+                <div >
+					
+                    <label for="file-upload"  >
+                        <i class="fas fa-cloud-upload-alt"></i> 
+                    </label>
+                    <input type="file" id="file-upload" accept="image/jpeg" class="form-control"  name="file">
+                </div>
+            </div><br>
+          
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form><br>
+	</main><br><br>
+	<div th:replace="~{components/footer :: footer}"></div>
+
+</body>
+</html>

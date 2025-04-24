@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arpo's Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:replace="components/nav-admin :: nav"></div>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Registro de proveedores </h1>
+        <form th:action="@{/supplier/saveSupplier}" th:object="${supplier}" method="post">
+
+			<div class="form-group col-6">
+				<label for="nameSupplier">Nombre proveedor</label>
+				<input type="text"  class="form-control" id="nameSupplier" th:field="*{nameSupplier}" placeholder="Ingrese el nombre del proveedor" required="required"> 
+			</div><br>
+			
+			<div class="form-group col-6">
+				<label for="phoneNumber">Número de celular Proveedor</label>
+				<input type="text"  class="form-control" id="phoneNumber" th:field="*{phoneNumber}" placeholder="Ingrese el numero celular" required="required" minlength="10" maxlength="12"> 
+			</div><br>
+			
+			<div class="form-group col-6">
+				<label for="address">Dirección Proveedor</label>
+				<input type="text"  class="form-control" id="address" th:field="*{address}"  placeholder="Ingrese la direccion del proveedor" required="required"> 
+			</div><br>
+			
+			<button type="submit" class="btn btn-primary">Registrar Proveedor</button>
+			 
+        </form><br><br><br><br><br><br>
+        
+        <div th:replace="components/footer :: footer" ></div>
+</body>
+</html>

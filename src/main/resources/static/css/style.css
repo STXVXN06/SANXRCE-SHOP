@@ -1,0 +1,9 @@
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Para asegurarte de que el footer se mantenga en la parte inferior de la página */
+}
+
+.site-footer {
+  margin-top: auto; /* Empujar el footer hacia la parte inferior del contenedor */
+}
