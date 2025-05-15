@@ -2,7 +2,6 @@ package com.arpo.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
@@ -47,18 +46,16 @@ class ArpoShopControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        
         testUser = new User();
         testUser.setEmail("test@example.com");
         testUser.setPassword("password");
+        
     }
 
     @Test
     void login_ValidCredentials_ReturnsCorrectView() {
-        when(userSingleton.login("test@example.com", "password")).thenReturn(Optional.of(testUser));
-        //  MOCK ProductService behavior (if needed for this test)
-        when(productService.getActiveProducts()).thenReturn(new ArrayList<>()); // Or whatever you need to return
-        
+        when(userSingleton.login("test@example.com", "password")).thenReturn(Optional.of(testUser));  
         String viewName = arpoShopController.login("test@example.com", "password", model, session);
         assertEquals("exploreProducts", viewName);
         verify(session).setAttribute(eq("userId"), anyLong());
