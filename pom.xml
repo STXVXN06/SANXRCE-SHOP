@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.1.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> 
 	</parent>
 	<groupId>com.arpo</groupId>
 	<artifactId>FinalProyectApps</artifactId>
@@ -15,8 +17,11 @@
 	<description>Proyecto final apps empresariales</description>
 	<properties>
 		<java.version>17</java.version>
+		<!-- Para que Surefire corra JUnit 5 -->
+		<maven.compiler.release>17</maven.compiler.release>
 	</properties>
 	<dependencies>
+		<!-- Tus dependencias existentes -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -29,7 +34,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -40,13 +44,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
 		<dependency>
 		    <groupId>org.apache.maven.plugins</groupId>
 		    <artifactId>maven-compiler-plugin</artifactId>
 		    <version>3.8.1</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
@@ -57,58 +59,86 @@
 			<artifactId>cloudinary-taglib</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		
-		
 		<dependency>
     		<groupId>com.github.librepdf</groupId>
     		<artifactId>openpdf</artifactId>
    		 	<version>1.3.8</version>
 		</dependency>
-
+		<!-- JUnit 5 -->
 		<dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.1</version>
             <scope>test</scope>
         </dependency>
-        
         <dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-engine</artifactId>
-    <version>5.8.1</version>
-    <scope>test</scope>
-</dependency>
-        
-		<dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Mockito -->
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>4.0.0</version>
             <scope>test</scope>
         </dependency>
-        
+
+        <!-- Allure JUnit5 adaptor -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>2.22.1</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- Plugin Spring Boot -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
-			
+			<!-- Surefire Plugin para correr tests con JUnit 5 -->
 			<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-surefire-report-plugin</artifactId>
-  <version>3.0.0</version>
-  <executions>
-    <execution>
-      <phase>verify</phase>
-      <goals>
-        <goal>report-only</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M8</version>
+				<configuration>
+					<useModulePath>false</useModulePath>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<!-- Plugin Allure para generar reportes -->
+			<plugin>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-maven</artifactId>
+				<version>2.11.2</version>
+				<configuration>
+					<reportVersion>2.22.1</reportVersion>
+				</configuration>
+			</plugin>
+
+			<!-- Reporte surefire (opcional, podés quitar si usás Allure) -->
+			<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-surefire-report-plugin</artifactId>
+			  <version>3.0.0</version>
+			  <executions>
+				<execution>
+				  <phase>verify</phase>
+				  <goals>
+					<goal>report-only</goal>
+				  </goals>
+				</execution>
+			  </executions>
+			</plugin>
 
 		</plugins>
 	</build>
