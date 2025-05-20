@@ -7,15 +7,19 @@ pipeline {
         stage('Build') {
             steps {
                 sh './mvnw clean install site surefire-report:report'
-                sh 'tree'
-                publishHTML(target: [
-                    reportDir: 'target/site',
-                    reportFiles: 'index.html',
-                    reportName: 'Surefire Report',
-                    keepAll: true,
-                    alwaysLinkToLastBuild: true
-                ])
+                sh 'tree target/site' // para ver que existe la carpeta y archivos
             }
+        }
+    }
+    post {
+        always {
+            publishHTML([
+                reportDir: 'target/site',
+                reportFiles: 'index.html',
+                reportName: 'Surefire Report',
+                keepAll: true,
+                alwaysLinkToLastBuild: true
+            ])
         }
     }
 }
