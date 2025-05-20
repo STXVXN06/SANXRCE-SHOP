@@ -15,7 +15,7 @@ pipeline {
         always {
             publishHTML([
                 reportDir: 'target/site',
-                reportFiles: 'index.html',
+                reportFiles: 'surefire-report.html',
                 reportName: 'Surefire Report',
                 keepAll: true,
                 alwaysLinkToLastBuild: true
