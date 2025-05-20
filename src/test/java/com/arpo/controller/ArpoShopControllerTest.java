@@ -35,7 +35,7 @@ import com.arpo.service.ProductService;
      private UserService userService;
 
      @MockBean
-     private ProductService productService; //  ADDED MockBean for ProductService
+     private ProductService productService; 
      
      @MockBean
      private CategoryProductService categoryService;
