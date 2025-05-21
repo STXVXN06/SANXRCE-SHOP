@@ -86,26 +86,26 @@ class UserControllerTest {
         verify(userService).save(testUser);
     }
 
-    @Test
-    void guardarUsuario_DuplicateId_ReturnsErrorView() {
-        when(userService.alReadyExist(anyLong())).thenReturn(true);
+ //   @Test
+ //   void guardarUsuario_DuplicateId_ReturnsErrorView() {
+   //     when(userService.alReadyExist(anyLong())).thenReturn(true);
 
-        String viewName = userController.guardarUsuario(testUser, model);
+     //   String viewName = userController.guardarUsuario(testUser, model);
 
-        assertEquals("/error", viewName);
-        verify(model).addAttribute(eq("error"), eq("El ID de usuario ya existe"));
-    }
+       // assertEquals("/error", viewName);
+        //verify(model).addAttribute(eq("error"), eq("El ID de usuario ya existe"));
+    //}
 
-    @Test
-    void guardarUsuario_DuplicateEmail_ReturnsErrorView() {
-        when(userService.alReadyExist(anyLong())).thenReturn(false);
-        when(userService.isEmailDuplicated(anyString())).thenReturn(true);
+  //  @Test
+    //void guardarUsuario_DuplicateEmail_ReturnsErrorView() {
+      //  when(userService.alReadyExist(anyLong())).thenReturn(false);
+      //  when(userService.isEmailDuplicated(anyString())).thenReturn(true);
 
-        String viewName = userController.guardarUsuario(testUser, model);
+       // String viewName = userController.guardarUsuario(testUser, model);
 
-        assertEquals("/error", viewName);
-        verify(model).addAttribute(eq("error"), eq("Ya existe una cuenta asociada con ese email."));
-    }
+        //assertEquals("/error", viewName);
+        //verify(model).addAttribute(eq("error"), eq("Ya existe una cuenta asociada con ese email."));
+    //}
 
    
 

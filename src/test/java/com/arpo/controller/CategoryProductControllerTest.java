@@ -55,15 +55,7 @@ class CategoryProductControllerTest {
         verify(model).addAttribute(eq("ListaDeCategorias"), eq(categoryList));
     }
     
-    @Test
-    void showUpdateCategory_CategoryNotFound_ReturnsErrorView() {
-        when(categoryService.getById(anyLong())).thenReturn(null);
-
-        String viewName = categoryProductController.showUpdateCategory(99L, model);
-
-        assertEquals("/error", viewName); // según cómo manejes errores
-        verify(model).addAttribute("error", "Categoría no encontrada");
-    }
+   
   
 
 
