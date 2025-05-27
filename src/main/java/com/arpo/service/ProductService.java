@@ -49,4 +49,11 @@ public class ProductService {
 	 public Optional<Product> get(Long id) {
 		 return productRepository.findById(id);
 	 }
+	 public List<Product> getBySupplier(Long idSupplier) {
+		 return productRepository.findByIdSupplier(idSupplier);
+	 }
+	 public List<Product> searchProductsByName(String term) {
+    	return productRepository.findByNameProductContainingIgnoreCase(term);
+}
+
 }
