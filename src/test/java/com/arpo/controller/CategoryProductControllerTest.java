@@ -56,12 +56,9 @@ class CategoryProductControllerTest {
     }
     
    
-  
-
-
 
     @Test
-    void saveCategory_ValidCategory_RedirectsToRegistro() {
+    void saveCategory_ValidCategory() {
         when(categoryService.save(any(CategoryProduct.class))).thenReturn(testCategory);
 
         String viewName = categoryProductController.saveCategory(testCategory, model);
@@ -71,7 +68,7 @@ class CategoryProductControllerTest {
     }
 
     @Test
-    void showUpdateCategory_CategoryFound_ReturnsUpdateCategoryView() {
+    void showUpdateCategory_CategoryFound() {
         when(categoryService.getById(anyLong())).thenReturn(testCategory);
 
         String viewName = categoryProductController.showUpdateCategory(testCategory.getIdCategoryProduct(), model);
@@ -81,7 +78,7 @@ class CategoryProductControllerTest {
     }
 
     @Test
-    void updateCategory_ValidCategory_RedirectsToList() {
+    void updateCategory_ValidCategory() {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(categoryService.getById(anyLong())).thenReturn(testCategory);
         when(categoryService.save(any(CategoryProduct.class))).thenReturn(testCategory);
@@ -94,7 +91,7 @@ class CategoryProductControllerTest {
     }
 
     @Test
-    void deletecategory_DeletesCategoryAndRedirectsToList() {
+    void deletecategory_DeletesCategory() {
         when(categoryService.getById(anyLong())).thenReturn(testCategory);
         doNothing().when(categoryService).delete(anyLong());
         when(categoryService.listCategory()).thenReturn(new ArrayList<>()); // Simulate list after deletion

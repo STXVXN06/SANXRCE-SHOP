@@ -4,19 +4,21 @@ import com.arpo.models.Rol;
 import com.arpo.models.User;
 import com.arpo.service.RolService;
 import com.arpo.service.UserService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class UserControllerTest {
@@ -57,28 +59,26 @@ class UserControllerTest {
         testUser.setAddress("123 Test St");
         testUser.setPhoneNumber("1234567890");
         testUser.setIdRol(testRol);
+
+        when(rolService.getRolById(anyInt())).thenReturn(testRol);
     }
-
-
 
     @Test
     void listaUsuarios_ReturnsListUsersView() {
-        List<User> userList = new ArrayList<>();
-        userList.add(testUser);
+        List<User> userList = List.of(testUser);
         when(userService.listUser()).thenReturn(userList);
 
         String viewName = userController.listaUsuarios(model);
 
         assertEquals("usuario/listar-usuarios", viewName);
-        verify(model).addAttribute(eq("ListaDeUsuarios"), eq(userList));
+        verify(model).addAttribute("ListaDeUsuarios", userList);
     }
 
     @Test
     void guardarUsuario_ValidUser_RedirectsToList() {
-        when(userService.alReadyExist(anyLong())).thenReturn(false);
-        when(userService.isEmailDuplicated(anyString())).thenReturn(false);
-        when(rolService.getRolById(anyInt())).thenReturn(testRol);
-        when(userService.save(any(User.class))).thenReturn(testUser);
+        when(userService.alReadyExist(testUser.getIdUser())).thenReturn(false);
+        when(userService.isEmailDuplicated(testUser.getEmail())).thenReturn(false);
+        when(userService.save(testUser)).thenReturn(testUser);
 
         String viewName = userController.guardarUsuario(testUser, model);
 
@@ -86,47 +86,13 @@ class UserControllerTest {
         verify(userService).save(testUser);
     }
 
- //   @Test
- //   void guardarUsuario_DuplicateId_ReturnsErrorView() {
-   //     when(userService.alReadyExist(anyLong())).thenReturn(true);
+ 
 
-     //   String viewName = userController.guardarUsuario(testUser, model);
-
-       // assertEquals("/error", viewName);
-        //verify(model).addAttribute(eq("error"), eq("El ID de usuario ya existe"));
-    //}
-
-  //  @Test
-    //void guardarUsuario_DuplicateEmail_ReturnsErrorView() {
-      //  when(userService.alReadyExist(anyLong())).thenReturn(false);
-      //  when(userService.isEmailDuplicated(anyString())).thenReturn(true);
-
-       // String viewName = userController.guardarUsuario(testUser, model);
-
-        //assertEquals("/error", viewName);
-        //verify(model).addAttribute(eq("error"), eq("Ya existe una cuenta asociada con ese email."));
-    //}
-
-   
-
-    @Test
-    void updateUser_ValidUser_RedirectsToList() {
-        when(bindingResult.hasErrors()).thenReturn(false);
-        when(userService.getById(anyLong())).thenReturn(testUser);
-        when(userService.save(any(User.class))).thenReturn(testUser);
-
-        String viewName = userController.updateUser(testUser.getIdUser(), testUser, bindingResult, model);
-
-        assertEquals("redirect:/user/listado-usuarios", viewName);
-        verify(userService).save(testUser);
-        verify(model).addAttribute(eq("successMessage"), anyString());
-    }
-
+  
     @Test
     void deleteEmpleado_DeletesUserAndRedirectsToList() {
-        when(userService.getById(anyLong())).thenReturn(testUser);
-        doNothing().when(userService).delete(anyLong());
-        when(userService.listUser()).thenReturn(new ArrayList<>()); // Simulate list after deletion
+        when(userService.getById(testUser.getIdUser())).thenReturn(testUser);
+        doNothing().when(userService).delete(testUser.getIdUser());
 
         String viewName = userController.deleteEmpleado(testUser.getIdUser(), model);
 

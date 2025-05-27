@@ -137,36 +137,51 @@ public class CartController {
 		
 		
 		@GetMapping("/saveOrder")
-		public String saveOrder(HttpSession session ) {
-			Date fechaCreacion = new Date();
-			order.setDateOrder(fechaCreacion);
-			
-			User usuario =userService.findById( Long.parseLong(session.getAttribute("userId").toString())).get();
-			
-			order.setUser(usuario);
-			order.setStatus("Procesado");
-			orderService.save(order);
-			int cantidad = 0;
-			List<Product> products = productService.listProduct();
-			
-			for (int i = 0; i < products.size(); i++) {
-				for (int j = 0; j < detalles.size(); j++) {
-					if(products.get(i).getIdProduct() == detalles.get(j).getProduct().getIdProduct()) {
-						cantidad = products.get(i).getStock() - detalles.get(j).getCantidad();
-						System.out.print(cantidad);
-						products.get(i).setStock(cantidad);
-					}
-				}
-			}
-			for (Cart dt:detalles) {
-				dt.setOrder(order);
-				cartService.save(dt);
-			}
-			
-			order = new Order();
-			detalles.clear();
-			
-			return "redirect:/order/showOrders";
+		public String saveOrder(HttpSession session) {
+		    Date fechaCreacion = new Date();
+		    order.setDateOrder(fechaCreacion);
+
+		    User usuario = userService.findById(Long.parseLong(session.getAttribute("userId").toString())).get();
+
+		    order.setUser(usuario);
+		    order.setStatus("Procesado");
+
+		    List<Product> products = productService.listProduct();
+
+		    // Validar stock antes de hacer nada
+		    for (Cart detalle : detalles) {
+		        for (Product producto : products) {
+		            if (producto.getIdProduct().equals(detalle.getProduct().getIdProduct())) {
+		                if (detalle.getCantidad() > producto.getStock()) {
+		                    // Stock insuficiente, regresar a carrito con mensaje de error (por ejemplo)
+		                    return "redirect:/cart?error=stockInsuficiente";
+		                }
+		            }
+		        }
+		    }
+
+		    // Si pasa la validación, actualiza el stock y guarda
+		    for (Cart detalle : detalles) {
+		        for (Product producto : products) {
+		            if (producto.getIdProduct().equals(detalle.getProduct().getIdProduct())) {
+		                int cantidad = producto.getStock() - detalle.getCantidad();
+		                producto.setStock(cantidad);
+		            }
+		        }
+		    }
+
+		    orderService.save(order);
+
+		    for (Cart dt : detalles) {
+		        dt.setOrder(order);
+		        cartService.save(dt);
+		    }
+
+		    order = new Order();
+		    detalles.clear();
+
+		    return "redirect:/order/showOrders";
 		}
+
 		
 }

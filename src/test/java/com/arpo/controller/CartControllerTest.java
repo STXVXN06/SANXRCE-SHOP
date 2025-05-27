@@ -138,7 +138,7 @@ package com.arpo.controller;
          testProduct.setPrice(100.00);
          testProduct.setStock(10); // Available stock
 
-         // Set up fake user data
+     
          testUser = new User();
          testUser.setIdUser(100L);
          testUser.setName("Test User");
@@ -151,7 +151,7 @@ package com.arpo.controller;
      }
 
      @Test
-     void addCart_ValidQuantity_AddsToCartAndReturnsView() {
+     void addCart_ValidQuantity() {
          Long productId = 1L;
          Integer quantity = 2;
          when(productService.get(productId)).thenReturn(Optional.of(testProduct));
@@ -167,30 +167,35 @@ package com.arpo.controller;
 
 
      @Test
-     void saveOrder_SavesOrderAndClearsCart() throws NoSuchFieldException, IllegalAccessException {
+     void saveOrder_SavesOrderAndClearsCart() throws Exception {
+         // Mock session y servicios
          when(session.getAttribute("userId")).thenReturn(testUser.getIdUser());
          when(userService.findById(testUser.getIdUser())).thenReturn(Optional.of(testUser));
          when(orderService.save(any(Order.class))).thenReturn(new Order());
          when(cartService.save(any(Cart.class))).thenReturn(new Cart());
 
-         List<Product> availableProducts = new ArrayList<>();
+         // Productos disponibles
          Product p1 = new Product();
          p1.setIdProduct(1L); p1.setStock(10); p1.setPrice(100.0); p1.setNameProduct("Product1");
          Product p2 = new Product();
          p2.setIdProduct(2L); p2.setStock(5); p2.setPrice(50.0); p2.setNameProduct("Product2");
-         availableProducts.add(p1);
-         availableProducts.add(p2);
+         List<Product> availableProducts = List.of(p1, p2);
          when(productService.listProduct()).thenReturn(availableProducts);
 
+         // Agregar items al carrito
          Cart cartItem1 = new Cart();
          cartItem1.setProduct(p1); cartItem1.setCantidad(2); cartItem1.setNombre("Product1");
          Cart cartItem2 = new Cart();
          cartItem2.setProduct(p2); cartItem2.setCantidad(1); cartItem2.setNombre("Product2");
 
+         // Acceso reflejo a campos privados (detalles y order)
          Field detallesField = CartController.class.getDeclaredField("detalles");
          detallesField.setAccessible(true);
-         ((ArrayList<Cart>) detallesField.get(cartController)).add(cartItem1);
-         ((ArrayList<Cart>) detallesField.get(cartController)).add(cartItem2);
+         @SuppressWarnings("unchecked")
+         List<Cart> detalles = (List<Cart>) detallesField.get(cartController);
+         detalles.clear();
+         detalles.add(cartItem1);
+         detalles.add(cartItem2);
 
          Field orderField = CartController.class.getDeclaredField("order");
          orderField.setAccessible(true);
@@ -199,14 +204,18 @@ package com.arpo.controller;
          currentOrder.setUser(testUser);
          orderField.set(cartController, currentOrder);
 
+         // Ejecutar el método a probar
          String viewName = cartController.saveOrder(session);
 
+         // Verificaciones
          assertEquals("redirect:/order/showOrders", viewName);
          verify(orderService, times(1)).save(any(Order.class));
          verify(cartService, times(2)).save(any(Cart.class));
          verify(productService, times(1)).listProduct();
 
-         assertTrue(((ArrayList<Cart>) detallesField.get(cartController)).isEmpty());
-         assertTrue(((Order) orderField.get(cartController)).getTotal() == 0);
+         // Validar que el carrito y orden se reseteen
+         assertTrue(detalles.isEmpty());
+         assertEquals(0, ((Order) orderField.get(cartController)).getTotal());
      }
+
  }
