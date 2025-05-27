@@ -64,7 +64,7 @@ class UserControllerTest {
     }
 
     @Test
-    void listaUsuarios_ReturnsListUsersView() {
+    void listaUsuarios() {
         List<User> userList = List.of(testUser);
         when(userService.listUser()).thenReturn(userList);
 
@@ -90,7 +90,7 @@ class UserControllerTest {
 
   
     @Test
-    void deleteEmpleado_DeletesUserAndRedirectsToList() {
+    void deleteEmpleado() {
         when(userService.getById(testUser.getIdUser())).thenReturn(testUser);
         doNothing().when(userService).delete(testUser.getIdUser());
 

@@ -111,7 +111,7 @@ class ArpoShopControllerTest {
     }
 
     @Test
-    void login_ValidCredentialsAdmin_ReturnsExploreProductsView() {
+    void login_ValidCredentialsAdmin() {
         testUser.setIdRol(testRolAdmin);
 
         String viewName = arpoShopController.login("test@example.com", "password", model, session);
@@ -124,7 +124,7 @@ class ArpoShopControllerTest {
     }
 
     @Test
-    void login_ValidCredentialsClient_ReturnsClientTemplateView() {
+    void login_ValidCredentialsClient() {
         testUser.setIdRol(testRolClient);
 
         String viewName = arpoShopController.login("test@example.com", "password", model, session);

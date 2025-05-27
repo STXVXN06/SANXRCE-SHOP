@@ -91,7 +91,7 @@ class CategoryProductControllerTest {
     }
 
     @Test
-    void deletecategory_DeletesCategory() {
+    void deletecategory() {
         when(categoryService.getById(anyLong())).thenReturn(testCategory);
         doNothing().when(categoryService).delete(anyLong());
         when(categoryService.listCategory()).thenReturn(new ArrayList<>()); // Simulate list after deletion
